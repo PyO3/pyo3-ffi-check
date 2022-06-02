@@ -1,3 +1,5 @@
+use std::{env, path::{Path, PathBuf}};
+
 use proc_macro2::{TokenStream, Span, Ident, TokenTree};
 use quote::quote;
 
@@ -20,9 +22,12 @@ pub fn for_all_structs(input: proc_macro::TokenStream) -> proc_macro::TokenStrea
         ).into();
     }
 
+    let doc_dir = get_doc_dir();
+    let structs_glob = format!("{}/doc/pyo3_ffi/struct.*.html", doc_dir.display());
+
     let mut output = TokenStream::new();
 
-    for entry in glob::glob("target/doc/pyo3_ffi/struct.*.html").expect("Failed to read glob pattern") {
+    for entry in glob::glob(&structs_glob).expect("Failed to read glob pattern") {
         let entry = entry.unwrap().file_name().unwrap().to_string_lossy().into_owned();
         let struct_name = entry.strip_prefix("struct.").unwrap().strip_suffix(".html").unwrap();
         let struct_ident = Ident::new(struct_name, Span::call_site());
@@ -32,11 +37,19 @@ pub fn for_all_structs(input: proc_macro::TokenStream) -> proc_macro::TokenStrea
     if output.is_empty() {
         quote!(
             compile_error!(
-                "No files found in `target/doc/pyo3_ffi/struct.*.html`, try running \
-                 `cargo doc -p pyo3_ffi` first."
+                concat!(
+                    "No files found at `",
+                    #structs_glob,
+                    "`, try running `cargo doc -p pyo3-ffi` first."
+                )
             )
         )
     } else {
         output
     }.into()
+}
+
+fn get_doc_dir() -> PathBuf {
+    let path = PathBuf::from(env::var_os("OUT_DIR").unwrap());
+    path.parent().unwrap().parent().unwrap().parent().unwrap().parent().unwrap().to_owned()
 }

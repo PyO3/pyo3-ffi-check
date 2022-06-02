@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    name: python${{ matrix.python-version }}-${{ matrix.platform.python-architecture }} ${{ matrix.platform.os }} rust-${{ matrix.rust }}
+    runs-on: ${{ matrix.platform.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        rust: [stable]
+        python-version: [
+          "3.7",
+          "3.8",
+          "3.9",
+          "3.10",
+          "3.11.0-beta.1",
+          "pypy-3.7",
+          "pypy-3.8",
+          "pypy-3.9"
+        ]
+        platform:
+          [
+            {
+              os: "macos-latest",
+              python-architecture: "x64",
+              rust-target: "x86_64-apple-darwin",
+            },
+            {
+              os: "ubuntu-latest",
+              python-architecture: "x64",
+              rust-target: "x86_64-unknown-linux-gnu",
+            },
+            {
+              os: "windows-latest",
+              python-architecture: "x64",
+              rust-target: "x86_64-pc-windows-msvc",
+            },
+          ]
+        include:
+          # Test 32-bit Windows only with the latest Python version
+          - rust: stable
+            python-version: "3.10"
+            platform:
+              {
+                os: "windows-latest",
+                python-architecture: "x86",
+                rust-target: "i686-pc-windows-msvc",
+              }
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: ${{ matrix.platform.python-architecture }}
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+          target: ${{ matrix.platform.rust-target }}
+          profile: minimal
+          default: true
+          # needed to correctly format errors, see #1865
+          components: rust-src
+
+      - run: cargo doc -p pyo3-ffi
+
+      - run: cargo run
+
+    env:
+      RUST_BACKTRACE: 1
+      CARGO_BUILD_TARGET: ${{ matrix.platform.rust-target }}

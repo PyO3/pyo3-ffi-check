@@ -1,1 +1,4 @@
 /target
+
+# deliberately don't lock so that nightly pyo3 version gets picked up in CI
+Cargo.lock
