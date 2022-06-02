@@ -7,7 +7,7 @@ fn main() {
         ($name:ident) => {{
             let pyo3_ffi_size = std::mem::size_of::<pyo3_ffi::$name>();
             let bindgen_size = std::mem::size_of::<bindings::$name>();
-            // Check if sizes differ, but ignore
+            // Check if sizes differ, but ignore zero-sized types (probably "opaque" in pyo3-ffi)
             if pyo3_ffi_size == 0 {
                 println!(
                     "warning: ignoring zero-sized pyo3_ffi type {}",
