@@ -5,7 +5,7 @@ macro_rules! check_struct {
 }
 
 fn main() {
-    pyo3_binary_check_macro::for_all_structs!(check_struct);
+    pyo3_ffi_check_macro::for_all_structs!(check_struct);
 }
 
 #[allow(non_snake_case, non_camel_case_types, non_upper_case_globals)]

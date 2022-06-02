@@ -1,5 +1,5 @@
 [package]
-name = "pyo3-binary-check"
+name = "pyo3-ffi-check"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 pyo3-ffi = { git = "https://github.com/pyo3/pyo3" }
-pyo3-binary-check-macro = { path = "./macro" }
+pyo3-ffi-check-macro = { path = "./macro" }
 
 [workspace]
 members = [

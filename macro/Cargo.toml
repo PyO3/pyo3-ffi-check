@@ -1,5 +1,5 @@
 [package]
-name = "pyo3-binary-check-macro"
+name = "pyo3-ffi-check-macro"
 version = "0.1.0"
 edition = "2021"
 

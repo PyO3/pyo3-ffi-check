@@ -222,25 +222,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pyo3-binary-check"
-version = "0.1.0"
-dependencies = [
- "bindgen",
- "pyo3-binary-check-macro",
- "pyo3-build-config",
- "pyo3-ffi",
-]
-
-[[package]]
-name = "pyo3-binary-check-macro"
-version = "0.1.0"
-dependencies = [
- "glob",
- "proc-macro2",
- "quote",
-]
-
-[[package]]
 name = "pyo3-build-config"
 version = "0.16.5"
 source = "git+https://github.com/pyo3/pyo3#53fd6db4e444f05e93533cfeecae95746d73940b"
@@ -256,6 +237,25 @@ source = "git+https://github.com/pyo3/pyo3#53fd6db4e444f05e93533cfeecae95746d739
 dependencies = [
  "libc",
  "pyo3-build-config",
+]
+
+[[package]]
+name = "pyo3-ffi-check"
+version = "0.1.0"
+dependencies = [
+ "bindgen",
+ "pyo3-build-config",
+ "pyo3-ffi",
+ "pyo3-ffi-check-macro",
+]
+
+[[package]]
+name = "pyo3-ffi-check-macro"
+version = "0.1.0"
+dependencies = [
+ "glob",
+ "proc-macro2",
+ "quote",
 ]
 
 [[package]]
