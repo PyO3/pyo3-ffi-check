@@ -12,6 +12,17 @@ fn main() {
         .header("wrapper.h")
         .clang_arg(format!("-I{python_include_dir}"))
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+        // blocklist some values which apparently have conflicting definitions on unix
+        .blocklist_item("FP_NORMAL")
+        .blocklist_item("FP_SUBNORMAL")
+        .blocklist_item("FP_NAN")
+        .blocklist_item("FP_INFINITE")
+        .blocklist_item("FP_INT_UPWARD")
+        .blocklist_item("FP_INT_DOWNWARD")
+        .blocklist_item("FP_INT_TOWARDZERO")
+        .blocklist_item("FP_INT_TONEARESTFROMZERO")
+        .blocklist_item("FP_INT_TONEAREST")
+        .blocklist_item("FP_ZERO")
         .generate()
         .expect("Unable to generate bindings");
 

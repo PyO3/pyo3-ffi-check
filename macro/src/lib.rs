@@ -1,4 +1,4 @@
-use std::{env, path::{Path, PathBuf}};
+use std::{env, path::PathBuf};
 
 use proc_macro2::{TokenStream, Span, Ident, TokenTree};
 use quote::quote;
