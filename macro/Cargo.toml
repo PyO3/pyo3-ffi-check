@@ -1,0 +1,12 @@
+[package]
+name = "pyo3-binary-check-macro"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+glob = "0.3"
+quote = "1"
+proc-macro2 = "1"
