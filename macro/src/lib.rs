@@ -13,7 +13,7 @@ pub fn for_all_structs(input: proc_macro::TokenStream) -> proc_macro::TokenStrea
         Some(TokenTree::Ident(i)) => i,
         _ => {
             return quote!(compile_error!(
-                "generated_test!() takes only a single ident as input"
+                "for_all_structs!() takes only a single ident as input"
             ))
             .into()
         }
@@ -21,7 +21,7 @@ pub fn for_all_structs(input: proc_macro::TokenStream) -> proc_macro::TokenStrea
 
     if !input.next().is_none() {
         return quote!(compile_error!(
-            "generated_test!() takes only a single ident as input"
+            "for_all_structs!() takes only a single ident as input"
         ))
         .into();
     }
@@ -83,7 +83,7 @@ pub fn for_all_fields(input: proc_macro::TokenStream) -> proc_macro::TokenStream
         Some(TokenTree::Ident(i)) => i,
         _ => {
             return quote!(compile_error!(
-                "generated_test!() takes exactly two ident as input"
+                "for_all_fields!() takes exactly two idents as input"
             ))
             .into()
         }
@@ -93,7 +93,7 @@ pub fn for_all_fields(input: proc_macro::TokenStream) -> proc_macro::TokenStream
         Some(TokenTree::Punct(punct)) if punct.as_char() == ',' => (),
         _ => {
             return quote!(compile_error!(
-                "generated_test!() takes exactly two ident as input"
+                "for_all_fields!() takes exactly two idents as input"
             ))
             .into()
         }
@@ -103,7 +103,7 @@ pub fn for_all_fields(input: proc_macro::TokenStream) -> proc_macro::TokenStream
         Some(TokenTree::Ident(i)) => i,
         _ => {
             return quote!(compile_error!(
-                "generated_test!() takes exactly two ident as input"
+                "for_all_fields!() takes exactly two idents as input"
             ))
             .into()
         }
@@ -111,7 +111,7 @@ pub fn for_all_fields(input: proc_macro::TokenStream) -> proc_macro::TokenStream
 
     if !input.next().is_none() {
         return quote!(compile_error!(
-            "generated_test!() takes exactly two ident as input"
+            "for_all_fields!() takes exactly two idents as input"
         ))
         .into();
     }
