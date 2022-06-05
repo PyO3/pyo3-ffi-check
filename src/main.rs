@@ -7,10 +7,10 @@ fn main() {
         ($name:ident) => {{
             let pyo3_ffi_size = std::mem::size_of::<pyo3_ffi::$name>();
             let bindgen_size = std::mem::size_of::<bindings::$name>();
-            
+
             let pyo3_ffi_align = std::mem::align_of::<pyo3_ffi::$name>();
             let bindgen_align = std::mem::align_of::<bindings::$name>();
-            
+
             // Check if sizes differ, but ignore zero-sized types (probably "opaque" in pyo3-ffi)
             if pyo3_ffi_size == 0 {
                 println!(
@@ -33,6 +33,26 @@ fn main() {
                     pyo3_ffi_align,
                     bindgen_align
                 );
+            } else {
+                pyo3_ffi_check_macro::for_all_fields!($name, check_field);
+            }
+        }};
+    }
+
+    macro_rules! check_field {
+        ($struct_name:ident, $field:ident) => {{
+            let pyo3_ffi_offset = memoffset::offset_of!(pyo3_ffi::$struct_name, $field);
+            let bindgen_offset = memoffset::offset_of!(bindings::$struct_name, $field);
+
+            if pyo3_ffi_offset != bindgen_offset {
+                failed = true;
+                println!(
+                    "error: field offset of {}.{} differs between pyo3_ffi ({}) and bindgen ({})",
+                    stringify!(struct_name),
+                    stringify!(field),
+                    pyo3_ffi_offset,
+                    bindgen_offset
+                );
             }
         }};
     }
@@ -46,7 +66,13 @@ fn main() {
     }
 }
 
-#[allow(non_snake_case, non_camel_case_types, non_upper_case_globals, dead_code, improper_ctypes)]
+#[allow(
+    non_snake_case,
+    non_camel_case_types,
+    non_upper_case_globals,
+    dead_code,
+    improper_ctypes
+)]
 mod bindings {
     include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 }
