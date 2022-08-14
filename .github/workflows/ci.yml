@@ -26,8 +26,10 @@ jobs:
           "3.9",
           "3.10",
           "3.11.0-beta.1",
-          "pypy-3.7",
-          "pypy-3.8",
+          # pypy 3.7, 3.8 and 3.9 are supported, but 3.7 and 3.8
+          # are not PEP 3123 compliant so fail checks here.
+          # "pypy-3.7",
+          # "pypy-3.8",
           "pypy-3.9"
         ]
         platform:
