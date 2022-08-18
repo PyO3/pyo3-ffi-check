@@ -48,8 +48,8 @@ fn main() {
                 failed = true;
                 println!(
                     "error: field offset of {}.{} differs between pyo3_ffi ({}) and bindgen ({})",
-                    stringify!(struct_name),
-                    stringify!(field),
+                    stringify!($struct_name),
+                    stringify!($field),
                     pyo3_ffi_offset,
                     bindgen_offset
                 );
